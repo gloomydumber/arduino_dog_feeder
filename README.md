@@ -1,5 +1,5 @@
-## arduinodogfeeder
-arduino dog feeder for 2019 pnu cse 1st semester project
+## Arduino Dog feeder
+Arduino Dog feeder for 2019 PNU CSE 1st Semester Project
 
 학과 | 학번 | 성명 | 학과 | 학번 | 성명
 ---- | ---- | ---- | ---- | ---- | ---- 
