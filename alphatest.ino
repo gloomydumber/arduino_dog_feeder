@@ -10,7 +10,7 @@ int amount = 0; //급여량
 int go = 0; //모터제어
 bool stateButton2; //주기
 bool stateButton3;  //급여량
-bool stateButton4;  모터제어
+bool stateButton4;  //모터제어
 int state_previous2 = 0;
 int state_previous3 = 0;
 int state_previous4 = 0;
@@ -20,6 +20,7 @@ int angle=0;  //모터 이동 범위 변수
 int servoPin = 11; //모터
 int later;  // //delay 변수 
 int mot;  //사료 양 변수
+unsigned long time_previous, time_current;
 
 void setup() {
   pinMode(A0, INPUT); //가변저항
@@ -29,38 +30,61 @@ void setup() {
   pinMode(pin_button3, INPUT);  //3번 스위치
   pinMode(pin_button4, INPUT);  //4번 스위치
   myServo.attach(servoPin); //모터
+  time_previous = millis();
 }
 
-void Motor(int mot, int later){ //모터제어(사료양, 대기시간)
+void Motor(int go, int mot, int later){ //모터제어(사료양, 대기시간)
+  Serial.println("go read");
   switch(go){
     case 0:    {
       lcd.setCursor(0,0);
       lcd.print("switch is off");
+      break;
     }
     case 1:    {  
       if(mot == 100){ //사료양 == 100g
         angle = 30; //각도 30도
+        delay(later * 60 * 1000);//대기시간 15분
         for(int i = 0; i < angle; i++){
           myServo.write(i);
-      }delay(later * 60 * 1000);} //대기시간 15분
+          delay(5);
+      }for(int i = angle ; i > 0; i--){
+        myServo.write(i);
+        delay(5);
+      } } 
     else if(mot == 150){ //사료양 == 150g
       angle = 60; //각도 60도
-      for(int i = 0; i < angle; i++){
+      delay(later * 60 * 1000); //대기시간 분
+        for(int i = 0; i < angle; i++){
+          myServo.write(i);
+          delay(5);
+      }for(int i = angle ; i > 0; i--){
         myServo.write(i);
-      }delay(later * 60 * 1000);} //대기시간 25분
+        delay(5);
+      }} 
     else if(mot == 200){ //사료양 == 200g
       angle = 90; //각도 90도
-      for(int i = 0; i < angle; i++){
+      delay(later * 60 * 1000);//대기시간 분
+        for(int i = 0; i < angle; i++){
+          myServo.write(i);
+          delay(5);
+      }for(int i = angle ; i > 0; i--){
         myServo.write(i);
-    }delay(later * 60 * 1000);} //대기시간 35분
+        delay(5);
+      }}
     else if(mot == 250){ //사료양 == 250g
       angle = 120;  //각도 120도
-      for(int i = 0; i < angle; i++){
+      delay(later * 60 * 1000);//대기시간 분    
+        for(int i = 0; i < angle; i++){
+          myServo.write(i);
+          delay(5);
+      }for(int i = angle ; i > 0; i--){
         myServo.write(i);
-    }delay(later * 60 * 1000);} //대기시간 45분
+        delay(5);
+      }} 
     else{
-      angle = 0;    }}
-  }
+      angle = 0;    }break;}
+  } 
 }
 
 void P_LCD(int period, unsigned long interval){ //주기 설정(주기 스위치 on/off, 가변저항)
@@ -129,6 +153,7 @@ void A_LCD(int amount, unsigned long interval){ //사료량 설정(스위치 on/
 }
 
 void loop() {
+  time_current = millis();
   stateButton3 = digitalRead(pin_button3);
   stateButton2 = digitalRead(pin_button2);
   stateButton4 = digitalRead(pin_button4);
@@ -161,13 +186,13 @@ if(stateButton4 == 1){ //모터 스위치
    Serial.println("period = "+String(period));
    
    if(period == 1 and amount == 0 and go == 0){
-      P_LCD(period, interval);
+      P_LCD(period, interval); // later 값을 들고온다
       }   
    else if(amount ==1 and period == 0 and go == 0){
-      A_LCD(amount, interval);
+      A_LCD(amount, interval); // mot 값을 들고온다
       }
    else if(period == 0 and amount == 0 and go == 1){
-    Motor(mot , later);
+    Motor(go, mot , later);
    }
    else{lcd.clear();}
     
