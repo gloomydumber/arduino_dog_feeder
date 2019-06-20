@@ -100,17 +100,12 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
           } */
         lcd.setCursor(0,1);
          lcd.print("  food : 100 g  ");
-        //delay(later * 60 * 1000);//대기시간 later분
  
-        int delayvalue = 3000;
+        int delayvalue = 3000;  //later * 60 * 1000
         static int seconds= delayvalue/1000;
-        /*
-        if(seconds ==-1)
-          seconds = delayvalue/1000;
-          */
         lcd.setCursor(0,0);
         lcd.print(" seconds : "+String(seconds)+"   ");
-       if(time_current - time_previous >= 1000){ //later * 60 * 1000
+       if(time_current - time_previous >= 1000){ 
             
             seconds--; // 초 감소
             Serial.println(" seconds : "+String(seconds)+"   ");
@@ -119,7 +114,7 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
             time_previous = time_current;
           if(seconds==0){
             lcd.setCursor(0,0);
-            lcd.print("      feeding!    ");
+            lcd.print("    feeding!    ");
             seconds=delayvalue/1000;
         for(int i = 0; i < angle; i++){
           myServo.write(i);
@@ -129,47 +124,82 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
         delay(5);
       }
       } } }
+      
     else if(mot == 150){ //사료양 == 150g
       angle = 90; //각도 90도
-      lcd.setCursor(0,0);
-      lcd.print("Period : "+String(later)+" min");
           lcd.setCursor(0,1);
             lcd.print("  food : 150 g  ");
-      //delay(later * 60 * 1000); //대기시간 later분
-             if(time_current - time_previous >= 5000){ //later * 60 * 1000
+            
+        int delayvalue = 5000;  //later * 60 * 1000
+        static int seconds= delayvalue/1000;
+        lcd.setCursor(0,0);
+        lcd.print(" seconds : "+String(seconds)+"   ");
+       if(time_current - time_previous >= 1000){ 
+            
+            seconds--; // 초 감소
+            Serial.println(" seconds : "+String(seconds)+"   ");
+            lcd.print(" seconds : "+String(seconds)+"   ");
+           
             time_previous = time_current;
+          if(seconds==0){
+            lcd.setCursor(0,0);
+            lcd.print("    feeding!    ");
+            seconds=delayvalue/1000;
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
       }for(int i = angle ; i > 0; i--){
         myServo.write(i);
         delay(5);
-      }} }
+      }} }}
+      
     else if(mot == 200){ //사료양 == 200g
       angle = 120; //각도 120도
-      lcd.setCursor(0,0);
-      lcd.print("Period : "+String(later)+" min");
       lcd.setCursor(0,1);
       lcd.print("  food : 200 g  ");
-     // delay(later * 60 * 1000);//대기시간 later분
-            if(time_current - time_previous >= 7000){ //later * 60 * 1000
+      
+        int delayvalue = 7000;  //later * 60 * 1000
+        static int seconds= delayvalue/1000;
+        lcd.setCursor(0,0);
+        lcd.print(" seconds : "+String(seconds)+"   ");
+       if(time_current - time_previous >= 1000){ 
+            
+            seconds--; // 초 감소
+            Serial.println(" seconds : "+String(seconds)+"   ");
+            lcd.print(" seconds : "+String(seconds)+"   ");
+           
             time_previous = time_current;
+          if(seconds==0){
+            lcd.setCursor(0,0);
+            lcd.print("    feeding!    ");
+            seconds=delayvalue/1000;
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
       }for(int i = angle ; i > 0; i--){
         myServo.write(i);
         delay(5);
-      }}}
+      }}}}
+      
     else if(mot == 250){ //사료양 == 250g
       angle = 160;  //각도 160도
-      lcd.setCursor(0,0);
-      lcd.print("Period : "+String(later)+" min");
       lcd.setCursor(0,1);
       lcd.print("  food : 250 g  ");
-     // delay(later * 60 * 1000);//대기시간 later분  
-            if(time_current - time_previous >= 12000){ //later * 60 * 1000
+        int delayvalue = 10000;  //later * 60 * 1000
+        static int seconds= delayvalue/1000;
+        lcd.setCursor(0,0);
+        lcd.print(" seconds : "+String(seconds)+"   ");
+       if(time_current - time_previous >= 1000){ 
+            
+            seconds--; // 초 감소
+            Serial.println(" seconds : "+String(seconds)+"   ");
+            lcd.print(" seconds : "+String(seconds)+"   ");
+           
             time_previous = time_current;
+          if(seconds==0){
+            lcd.setCursor(0,0);
+            lcd.print("    feeding!    ");
+            seconds=delayvalue/1000;
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
@@ -177,10 +207,11 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
         myServo.write(i);
         delay(5);
       }}} 
+      
     else{
       angle = 0;    }break;}
   } 
-}
+}}
 
 void P_LCD(int period, unsigned long interval){ //주기 설정(주기 스위치 on/off, 가변저항)
     switch(period){
