@@ -1,5 +1,6 @@
 ## Arduino Dog feeder
 Arduino Dog feeder for 2019 PNU CSE 1st Semester Project
+부산대 전기컴퓨터공학부 정보컴퓨터공학전공 컴퓨터기초실험 프로젝트
 
 학과 | 학번 | 성명 | 학과 | 학번 | 성명
 ---- | ---- | ---- | ---- | ---- | ---- 
