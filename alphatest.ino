@@ -24,6 +24,7 @@ unsigned long time_previous, time_current;
 #include <Wire.h>
 #include "RTClib.h"
 RTC_DS1307 rtc;
+unsigned long time1;
 char daysOfTheWeek[7][12] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 /*
 DateTime now = rtc.now();
@@ -70,7 +71,7 @@ void Time(){
     Serial.print(now.second(), DEC);
     Serial.println();
     lcd.setCursor(0,0);
-    lcd.print(" "+String(now.year())+"/"+String(now.month())+"/"+String(now.day())+"/"+String(daysOfTheWeek[now.dayOfTheWeek()])+" ");
+    lcd.print(" "+String(now.year())+"/"+String(now.month())+"/"+String(now.day())+"/"+String(daysOfTheWeek[now.dayOfTheWeek()])+"  ");
     lcd.setCursor(0,1);
     lcd.print(" "+String(now.hour())+"  : "+String(now.minute())+"  : "+String(now.second())+" ");
     delay(1000);
@@ -86,19 +87,47 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
     case 1:    {
       if(mot == 100){ //사료양 == 100g
         angle = 60; //각도 60도
-        lcd.setCursor(0,0);
-      lcd.print("Period : "+String(later)+" min");
+       /*
+        int i=1;    
+         if( i != 0){
+          Serial.println("ifmoon dongjak");
+          for(i = 177; i > 0 ; i--){
+          lcd.setCursor(0,0);
+          Serial.println("i value : "+String(i));
+          lcd.print(" Period: "+String(i)+"   ");}}
+         else{
+           i = 177;
+          } */
         lcd.setCursor(0,1);
          lcd.print("  food : 100 g  ");
         //delay(later * 60 * 1000);//대기시간 later분
-       if(time_current - time_previous >= 3000){ //later * 60 * 1000
-            time_previous = time_current; 
+ 
+        int delayvalue = 3000;
+        static int seconds= delayvalue/1000;
+        /*
+        if(seconds ==-1)
+          seconds = delayvalue/1000;
+          */
+        lcd.setCursor(0,0);
+        lcd.print(" seconds : "+String(seconds)+"   ");
+       if(time_current - time_previous >= 1000){ //later * 60 * 1000
+            
+            seconds--; // 초 감소
+            Serial.println(" seconds : "+String(seconds)+"   ");
+            lcd.print(" seconds : "+String(seconds)+"   ");
+           
+            time_previous = time_current;
+          if(seconds==0){
+            lcd.setCursor(0,0);
+            lcd.print("      feeding!    ");
+            seconds=delayvalue/1000;
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
       }for(int i = angle ; i > 0; i--){
         myServo.write(i);
         delay(5);
+      }
       } } }
     else if(mot == 150){ //사료양 == 150g
       angle = 90; //각도 90도
