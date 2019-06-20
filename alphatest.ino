@@ -42,8 +42,13 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
       break;
     }
     case 1:    {  
+      
       if(mot == 100){ //사료양 == 100g
-        angle = 60; //각도 30도
+        angle = 60; //각도 60도
+        lcd.setCursor(0,0);
+      lcd.print("Period : "+String(later)+" min");
+        lcd.setCursor(0,1);
+         lcd.print("  food : 100 g  ");
         //delay(later * 60 * 1000);//대기시간 later분
        if(time_current - time_previous >= 3000){
             time_previous = time_current; 
@@ -55,7 +60,11 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
         delay(5);
       } } }
     else if(mot == 150){ //사료양 == 150g
-      angle = 60; //각도 60도
+      angle = 90; //각도 90도
+      lcd.setCursor(0,0);
+      lcd.print("Period : "+String(later)+" min");
+          lcd.setCursor(0,1);
+            lcd.print("  food : 150 g  ");
       //delay(later * 60 * 1000); //대기시간 later분
              if(time_current - time_previous >= 5000){
             time_previous = time_current;
@@ -67,10 +76,15 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
         delay(5);
       }} }
     else if(mot == 200){ //사료양 == 200g
-      angle = 90; //각도 90도
+      angle = 120; //각도 120도
+      lcd.setCursor(0,0);
+      lcd.print("Period : "+String(later)+" min");
+      lcd.setCursor(0,1);
+      lcd.print("  food : 200 g  ");
      // delay(later * 60 * 1000);//대기시간 later분
             if(time_current - time_previous >= 7000){
             time_previous = time_current;
+            
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
@@ -79,10 +93,15 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
         delay(5);
       }}}
     else if(mot == 250){ //사료양 == 250g
-      angle = 120;  //각도 120도
+      angle = 160;  //각도 160도
+      lcd.setCursor(0,0);
+      lcd.print("Period : "+String(later)+" min");
+      lcd.setCursor(0,1);
+      lcd.print("  food : 250 g  ");
      // delay(later * 60 * 1000);//대기시간 later분  
             if(time_current - time_previous >= 12000){
             time_previous = time_current;  
+            
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
