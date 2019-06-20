@@ -1,34 +1,74 @@
-int REC = 8;
-int PLAYE = 9;
-char input = 0;
- 
-void setup() {
-  Serial.begin(9600);
-  pinMode (REC,OUTPUT);
-  pinMode (PLAYE,OUTPUT);
+#define PIN_GATE_IN 2 // DB chekcer
+#define IRQ_GATE_IN 0 // DB checker
+#define PIN_LED_OUT 13 //  DB checker
+#define PIN_ANALOG_IN A0 // DB checker
+
+int REC = 8; // recorder
+int PLAYE = 9; // recorder
+char input = 0; // recorder
+
+void soundISR() // DB checker
+{
+ int pin_val;
+
+ pin_val = digitalRead(PIN_GATE_IN); 
+ digitalWrite(PIN_LED_OUT, pin_val); 
 }
+
+void setup()
+{
+ Serial.begin(9600);
+ pinMode(REC,OUTPUT); // Recorder
+ pinMode(PLAYE,OUTPUT); // Recorder
  
-void loop() {
-  // 시리얼 통신이 연결되어 있을시
-  while(Serial.available()) {
-    // 시리얼 창을 통해 입력된 값을 읽어드립니다.
-    input = Serial.read();
-    switch(input) {
-      // 시리얼 창 R 입력 시 녹음 시작
-      case 'R': 
-        digitalWrite(REC,HIGH);
-        break;
-      // 시리얼 창 S 입력 시 녹음 종료
-      case 'S': 
-        digitalWrite(REC,LOW);
-        break;
-      // 시리얼 창 P 입력 시 녹음된 음성 재생
-      // PLAYE 기능을 사용하기 때문에 잠깐 HIGH 값 입력 후 LOW 값 입력
-      case 'P': 
-        digitalWrite(PLAYE,HIGH);
-        delay(10);
-        digitalWrite(PLAYE,LOW);
-        break;
-    }
+ pinMode(PIN_LED_OUT, OUTPUT); // DB checker LED OUTPUT
+ pinMode(PIN_GATE_IN, INPUT); // DB checker
+ attachInterrupt(IRQ_GATE_IN, soundISR, CHANGE); //DB checker
+
+ Serial.println("Initialized"); // DB checker Initialized
+}
+
+void loop()
+{
+ // DB checker from here
+ int value; // DB checker
+
+ value = analogRead(PIN_ANALOG_IN);
+
+ Serial.print(value);
+ Serial.print("Status: ");
+ if(value <= 100)
+ {
+ Serial.println("Quiet.");
+ }
+ else if( (value > 100) && ( value <= 300) )
+ {
+ Serial.println("Moderate.");
+ }
+ else if(value > 300)
+ {
+ Serial.println("Loud.");
+ }
+
+ delay(1000);
+ 
+  // recorder from here
+ while(Serial.available()){
+  input = Serial.read();
+  if(value>300)
+    input='P'; // when loud
+  switch(input){
+    case 'R':
+      digitalWrite(REC,HIGH);
+      break;
+    case 'S':
+      digitalWrite(REC,LOW);
+      break;
+     case 'P':
+      digitalWrite(PLAYE,HIGH);
+      delay(10);
+      digitalWrite(PLAYE,LOW);
+      break;
   }
+ }
 }
