@@ -21,7 +21,18 @@ int servoPin = 11; //모터
 int later;  // //delay 변수 
 int mot;  //사료 양 변수
 unsigned long time_previous, time_current;
+#include <Wire.h>
+#include "RTClib.h"
+RTC_DS1307 rtc;
+char daysOfTheWeek[7][12] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+/*
+DateTime now = rtc.now();
 
+if(1<=now.month() || now.month()<=9){
+     String months = "0"+String(now.month());}
+    else
+      String months = String(now.month());
+*/
 void setup() {
   pinMode(A0, INPUT); //가변저항
   Serial.begin(9600); //아두이노 출력
@@ -31,8 +42,39 @@ void setup() {
   pinMode(pin_button4, INPUT);  //4번 스위치
   myServo.attach(servoPin); //모터
   time_previous = millis();
-}
+    if (! rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    while (1);
+  }
+  if (!rtc.isrunning()) {
+    Serial.println("RTC lost power, lets set the time!");
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  }
 
+}
+void Time(){
+      DateTime now = rtc.now();
+    Serial.println("Current Date & Time: ");
+    Serial.print(now.year(), DEC);
+    Serial.print('/');
+    Serial.print(now.month(), DEC);
+    Serial.print('/');
+    Serial.print(now.day(), DEC);
+    Serial.print(" (");
+    Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+    Serial.print(") ");
+    Serial.print(now.hour(), DEC);
+    Serial.print(':');
+    Serial.print(now.minute(), DEC);
+    Serial.print(':');
+    Serial.print(now.second(), DEC);
+    Serial.println();
+    lcd.setCursor(0,0);
+    lcd.print(" "+String(now.year())+"/"+String(now.month())+"/"+String(now.day())+"/"+String(daysOfTheWeek[now.dayOfTheWeek()])+" ");
+    lcd.setCursor(0,1);
+    lcd.print(" "+String(now.hour())+"  : "+String(now.minute())+"  : "+String(now.second())+" ");
+    delay(1000);
+}
 void Motor(int go, int mot, int later, unsigned long time_current){ //모터제어(go 스위치,사료양, 대기시간)
   Serial.println("go read");
   switch(go){
@@ -41,8 +83,7 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
       lcd.print("switch is off");
       break;
     }
-    case 1:    {  
-      
+    case 1:    {
       if(mot == 100){ //사료양 == 100g
         angle = 60; //각도 60도
         lcd.setCursor(0,0);
@@ -50,7 +91,7 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
         lcd.setCursor(0,1);
          lcd.print("  food : 100 g  ");
         //delay(later * 60 * 1000);//대기시간 later분
-       if(time_current - time_previous >= 3000){
+       if(time_current - time_previous >= 3000){ //later * 60 * 1000
             time_previous = time_current; 
         for(int i = 0; i < angle; i++){
           myServo.write(i);
@@ -66,7 +107,7 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
           lcd.setCursor(0,1);
             lcd.print("  food : 150 g  ");
       //delay(later * 60 * 1000); //대기시간 later분
-             if(time_current - time_previous >= 5000){
+             if(time_current - time_previous >= 5000){ //later * 60 * 1000
             time_previous = time_current;
         for(int i = 0; i < angle; i++){
           myServo.write(i);
@@ -82,9 +123,8 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
       lcd.setCursor(0,1);
       lcd.print("  food : 200 g  ");
      // delay(later * 60 * 1000);//대기시간 later분
-            if(time_current - time_previous >= 7000){
+            if(time_current - time_previous >= 7000){ //later * 60 * 1000
             time_previous = time_current;
-            
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
@@ -99,9 +139,8 @@ void Motor(int go, int mot, int later, unsigned long time_current){ //모터제�
       lcd.setCursor(0,1);
       lcd.print("  food : 250 g  ");
      // delay(later * 60 * 1000);//대기시간 later분  
-            if(time_current - time_previous >= 12000){
-            time_previous = time_current;  
-            
+            if(time_current - time_previous >= 12000){ //later * 60 * 1000
+            time_previous = time_current;
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
@@ -221,6 +260,9 @@ if(stateButton4 == 1){ //모터 스위치
       }
    else if(period == 0 and amount == 0 and go == 1){
     Motor(go, mot, later,time_current);//모터스위치, 사료량 변수, 주기 변수 
+   }
+   else if(period == 0 and amount == 0 and go == 0){
+    Time();
    }
    else{lcd.clear();}
     
