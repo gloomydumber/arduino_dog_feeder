@@ -177,12 +177,12 @@ void Speaker(int sound, unsigned long interval ){
         if(interval <= 50){
         k = 1;
         lcd.setCursor(0,1);
-        lcd.print("Speaker off");
+        lcd.print("Speaker off     ");
         }
         else{
         k = 1;
         lcd.setCursor(0,1);
-        lcd.print("Speaker on ");
+        lcd.print("Speaker on     ");
     }    }}}
 
     void buzz(int targetPin, long frequency, long length) { // @for buzzer
