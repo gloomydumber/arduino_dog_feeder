@@ -6,6 +6,17 @@
 #define IRQ_GATE_IN 9 // @DB checker original : 0
 #define PIN_LED_OUT 10 //  @DB checker original : 13
 #define PIN_ANALOG_IN A1 // @DB checker original : A0
+#define melodyPin 7 // @melodypin
+int melody[] = {
+  NOTE_E7, NOTE_E7, 0, NOTE_E7,
+  0, NOTE_C7, NOTE_E7, 0,
+  NOTE_G7, 0, 0,  0,
+  NOTE_G6, 0, 0, 0}
+int tempo[] = {
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12}
 
 int REC = 14; // @recorder(blue one) original : 8
 int PLAYE = 15; // @recorder original : 9
@@ -47,14 +58,8 @@ unsigned long time_previous, time_current;
 RTC_DS1307 rtc;
 unsigned long time1;
 char daysOfTheWeek[7][12] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-/*
-DateTime now = rtc.now();
-if(1<=now.month() || now.month()<=9){
-     String months = "0"+String(now.month());}
-    else
-      String months = String(now.month());
-*/
 void setup() {
+  pinMode(7, OUTPUT);//@buzzer
   pinMode(REC,OUTPUT); // @recorder
   pinMode(PLAYE,OUTPUT); // @recorder
   pinMode(PIN_LED_OUT, OUTPUT); // @db checker led output
@@ -96,6 +101,21 @@ void Speaker(int sound, unsigned long interval ){
         lcd.print("Speaker on ");
     }    }}}
 
+    void buzz(int targetPin, long frequency, long length) { // @for buzzer
+  long delayValue = 1000000 / frequency / 2; // calculate the delay value between transitions
+  //// 1 second's worth of microseconds, divided by the frequency, then split in half since
+  //// there are two phases to each cycle
+  long numCycles = frequency * length / 1000; // calculate the number of cycles for proper timing
+  //// multiply frequency, which is really cycles per second, by the number of seconds to
+  //// get the total number of cycles to produce
+  for (long i = 0; i < numCycles; i++) { // for the calculated length of time...
+    digitalWrite(targetPin, HIGH); // write the buzzer pin high to push out the diaphram
+    delayMicroseconds(delayValue); // wait for the calculated delay value
+    digitalWrite(targetPin, LOW); // write the buzzer pin low to pull back the diaphram
+    delayMicroseconds(delayValue); // wait again or the calculated delay value
+  }
+  
+
 void Time(){
       DateTime now = rtc.now();
     Serial.println("Current Date & Time: ");
@@ -129,6 +149,24 @@ void soundenable(void){//@soundenable
     digitalWrite(PLAYE,LOW);
     }
     delay(1000);
+    // from here ultrawavesound
+     int size = sizeof(melody) / sizeof(int);
+    for (int thisNote = 0; thisNote < size; thisNote++) {
+ 
+      // to calculate the note duration, take one second
+      // divided by the note type.
+      //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+      int noteDuration = 1000 / tempo[thisNote];
+ 
+      buzz(melodyPin, melody[thisNote], noteDuration);
+ 
+      // to distinguish the notes, set a minimum time between them.
+      // the note's duration + 30% seems to work well:
+      int pauseBetweenNotes = noteDuration * 1.30;
+      delay(pauseBetweenNotes);
+ 
+      // stop the tone playing:
+      buzz(melodyPin, 0, noteDuration);
   }
 
 void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모터제어(go 스위치,사료양, 대기시간, 스피커 on(1)/off(0))
@@ -142,17 +180,6 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
     case 1:    {
       if(mot == 100){ //사료양 == 100g
         angle = 60; //각도 60도
-       /*
-        int i=1;
-         if( i != 0){
-          Serial.println("ifmoon dongjak");
-          for(i = 177; i > 0 ; i--){
-          lcd.setCursor(0,0);
-          Serial.println("i value : "+String(i));
-          lcd.print(" Period: "+String(i)+"   ");}}
-         else{
-           i = 177;
-          } */
         lcd.setCursor(0,1);
          lcd.print("  food : 100 g  ");
 
