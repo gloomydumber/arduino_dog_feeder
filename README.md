@@ -24,3 +24,5 @@ Arduino Dog feeder for 2019 PNU CSE 1st Semester Project
 <strong>프로젝트 진행 과정</strong>
 
 어벤더치 먹고 왕푸징 가서 탕수육 작은거 시켰는데 늦게 나와서 대짜줌 ㅋ
+
+ㅋㅋ오공복이도 먹었는데 존나매움ㅋㅋ
