@@ -149,7 +149,7 @@ void Time(){
 void soundenable(void){//@soundenable
   int value; // @Decibel checker
   value = analogRead(PIN_ANALOG_IN);
-  if(value > 260){
+  if(value > 260){    //임의 값 : 260 ,  실제값 : 반려동물 짖는 소리
     digitalWrite(PLAYE,HIGH);
     delay(10);
     digitalWrite(PLAYE,LOW);
