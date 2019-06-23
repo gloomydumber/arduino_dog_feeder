@@ -149,7 +149,7 @@ void Time(){
 void soundenable(void){//@soundenable
   int value; // @Decibel checker
   value = analogRead(PIN_ANALOG_IN);
-  if(value > 260){    //임의 값 : 260 ,  실제값 : 반려동물 짖는 소리
+  if(value > 200){    //임의 값 : 260 ,  실제값 : 반려동물 짖는 소리
     digitalWrite(PLAYE,HIGH);
     delay(10);
     digitalWrite(PLAYE,LOW);
@@ -199,7 +199,7 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
             seconds--; // 초 감소
             if(k == 1)
             soundenable();
-            Serial.println(" seconds : "+String(seconds)+"   ");
+            Serial.println(" second=s : "+String(seconds)+"   ");
             lcd.print(" seconds : "+String(seconds)+"   ");
 
             time_previous = time_current;
@@ -207,13 +207,14 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
             lcd.setCursor(0,0);
             lcd.print("    feeding!    ");
             seconds=delayvalue/1000;
+            for(int a = 0; a < 4; a++){
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
       }for(int i = angle ; i > 0; i--){
         myServo.write(i);
         delay(5);
-      }
+      }}
       } } }
 
     else if(mot == 150){ //사료양 == 150g
@@ -238,13 +239,14 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
             lcd.setCursor(0,0);
             lcd.print("    feeding!    ");
             seconds=delayvalue/1000;
+            for(int a = 0; a < 4; a++){
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
       }for(int i = angle ; i > 0; i--){
         myServo.write(i);
         delay(5);
-      }} }}
+      }}}}}
 
     else if(mot == 200){ //사료양 == 200g
       angle = 120; //각도 120도
@@ -268,13 +270,14 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
             lcd.setCursor(0,0);
             lcd.print("    feeding!    ");
             seconds=delayvalue/1000;
+            for(int a = 0; a < 4; a++){
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
       }for(int i = angle ; i > 0; i--){
         myServo.write(i);
         delay(5);
-      }}}}
+      }}}}}
 
     else if(mot == 250){ //사료양 == 250g
       angle = 160;  //각도 160도
@@ -297,13 +300,14 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
             lcd.setCursor(0,0);
             lcd.print("    feeding!    ");
             seconds=delayvalue/1000;
+            for(int a = 0; a < 4; a++){
         for(int i = 0; i < angle; i++){
           myServo.write(i);
           delay(5);
       }for(int i = angle ; i > 0; i--){
         myServo.write(i);
         delay(5);
-      }}}
+      }}}}
 
     else{
       angle = 0;    }break;}
@@ -414,6 +418,7 @@ if(stateButton5 == 1){ //스피커 스위치
   go = go%2;  //on/off
   amount = amount%2;  //on/off
   period = period%2;  //on/off
+  Serial.print("sound = " +String(sound));
    Serial.print("go = "+String(go));
    Serial.print("amount = "+String(amount));
    Serial.println("period = "+String(period));
@@ -434,7 +439,7 @@ if(stateButton5 == 1){ //스피커 스위치
     Speaker(sound, interval);
    }
    else{lcd.clear();}
-
+  Serial.print("k = " +String(k));
    Serial.print("later = "+String(later));
    Serial.println("mot = "+String(mot));
 int adc = analogRead(A0); //가변저항 읽기
