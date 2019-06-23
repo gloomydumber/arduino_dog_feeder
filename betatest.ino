@@ -228,6 +228,8 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
        if(time_current - time_previous >= 1000){
 
             seconds--; // 초 감소
+         if(k == 1)
+            soundenable();
             Serial.println(" seconds : "+String(seconds)+"   ");
             lcd.print(" seconds : "+String(seconds)+"   ");
 
@@ -256,6 +258,8 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
        if(time_current - time_previous >= 1000){
 
             seconds--; // 초 감소
+         if(k == 1)
+            soundenable();
             Serial.println(" seconds : "+String(seconds)+"   ");
             lcd.print(" seconds : "+String(seconds)+"   ");
 
@@ -283,6 +287,8 @@ void Motor(int go, int mot, int later, unsigned long time_current, int k){ //모
        if(time_current - time_previous >= 1000){
 
             seconds--; // 초 감소
+         if(k == 1)
+            soundenable();
             Serial.println(" seconds : "+String(seconds)+"   ");
             lcd.print(" seconds : "+String(seconds)+"   ");
 
