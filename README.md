@@ -15,7 +15,7 @@ Arduino Dog feeder for 2019 PNU CSE 1st Semester Project
 
 <strong>프로젝트 계획</strong>
 
-<strong>[부산대 전기컴퓨터공학부 컴퓨터공학전공](https://cse.pusan.ac.kr)</strong>컴퓨터기초실험 과목 기말과제
+<strong>[부산대 전기컴퓨터공학부 컴퓨터공학전공](https://cse.pusan.ac.kr)</strong> 컴퓨터기초실험 과목 기말과제
 
 차후에 웹, ANDROID 및 iOS 어플리케이션, GUI 관련 툴 등을 학습하여 연계할 수 있을 것으로 생각하여 선택하였고,
 실제로 공부해둔 간단한 폼보드 제작과 연계함.
