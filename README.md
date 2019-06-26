@@ -10,6 +10,7 @@ Arduino Dog feeder for 2019 PNU CSE 1st Semester Project
 ## 프로젝트 개요
 <strong>프로젝트 디자인</strong>
 ![img](./readmeimg/ahnross.png)
+![img](./readmeimg/design.png)
 <strong>프로젝트 계획</strong>
 
 <strong>[개밥주기](https://cse.pusan.ac.kr)</strong>에서 개밥주는 과제를 내어줬다.
@@ -23,12 +24,14 @@ Arduino Dog feeder for 2019 PNU CSE 1st Semester Project
 
 <strong>프로젝트 진행 과정</strong>
 
-어벤더치 먹고 왕푸징 가서 탕수육 작은거 시켰는데 늦게 나와서 대짜줌 ㅋ
+외부 프레임은 폼보드 사용
 
-ㅋㅋ오공복이도 먹었는데 존나매움ㅋㅋ
+소리감지센서로 개 짖는 소리 감지
 
-모듈 고장난거 같아서 새로 구매했는데 그냥 모듈이 쓰레기 ㅋ
+녹음모듈을 통해 반려견 주인 목소리 녹음하여 개가 짖을 때 재생
 
-폼보드 붙이는거 짜증남
+모터를 이용해 사료급여
 
-우리만 만들고 있는거 같아서 몇 번 현타옴 
+RTC모듈을 이용하여 시각 표시
+
+8옴 스피커를 통해 개가 싫어하는 주파수 재생
